@@ -1,6 +1,6 @@
-# Zweikopf
+# Zweihopf, a two-headed JVM friend of yours.
 
-TODO: Write a gem description
+Zweikopf helps you to interoperate between Clojure and JRuby on JVM.
 
 ## Installation
 
@@ -27,3 +27,8 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+# Copyright
+
+Alex P and other contributors.
+Distributed under MIT License.
