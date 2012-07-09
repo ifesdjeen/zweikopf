@@ -16,6 +16,12 @@ Or install it yourself as:
 
     $ gem install zweikopf
 
+# Performance
+
+## Conversion from Ruby hash to Clojure PersistentHash Map
+
+Most of time 52% according to the rough estimate is spent while converting from ruby Symbol to clojure Keyword.
+
 ## Usage
 
 TODO: Write usage instructions here

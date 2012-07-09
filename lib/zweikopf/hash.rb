@@ -11,7 +11,11 @@ module Zweikopf
     def self.create(hash)
       ret = empty.as_transient
       hash.each do |k, v|
-        ret = ret.assoc(Keyword.intern(k.to_s), v)
+        if v.is_a?(::Hash)
+          ret = ret.assoc(Keyword.intern(k.to_s), create(v))
+        else
+          ret = ret.assoc(Keyword.intern(k.to_s), v)
+        end
       end
       ret.persistent
     end
