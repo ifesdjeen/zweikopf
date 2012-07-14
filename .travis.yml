@@ -3,4 +3,4 @@ rvm:
 jdk:
   - openjdk6
   - openjdk7
-script: "rake && lein test"
+script: "rake && lein2 test"
