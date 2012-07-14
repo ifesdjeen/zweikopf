@@ -1,6 +1,8 @@
 (ns zweikopf.core
-  (:import [org.jruby RubyObject RubyHash
-            RubySymbol RubyHash$RubyHashEntry RubyArray]))
+  (:require [clojure.reflect :as r])
+  (:import [org.jruby RubyObject RubyHash RubyBasicObject
+            RubySymbol RubyHash$RubyHashEntry RubyArray]
+           [org.jruby.javasupport JavaUtil]))
 
 (defprotocol Clojurize
   (clojurize [this]))
@@ -9,7 +11,7 @@
   java.lang.Object
   (clojurize [this] this)
   RubyObject
-  (clojurize [this] this)
+  (clojurize [this] (JavaUtil/convertRubyToJava this))
   RubySymbol
   (clojurize [^RubySymbol this]
              (clojure.lang.Keyword/intern (.toString this)))
