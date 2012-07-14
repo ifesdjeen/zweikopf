@@ -36,5 +36,6 @@ TODO: Write usage instructions here
 
 # Copyright
 
-Alex P and other contributors.
-Distributed under MIT License.
+Copyright (C) 2011-2012 Alex Petrov, Maximilian Karasz, Daniel Steiner.
+
+Distributed under the Eclipse Public License, the same as Clojure.
