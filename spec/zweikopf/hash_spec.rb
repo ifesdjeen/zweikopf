@@ -45,6 +45,32 @@ describe Zweikopf::Hash do
         Zweikopf::Hash.create({:a => 1, :b => {:c => 3, :d =>4}}).should eql hash
       end
     end
+
+    context "given a data structure that requires custom transformations" do
+
+      #
+      # Environment
+      #
+
+      class CustomTransformedEntry
+        def serializable_hash
+          {:c => 3, :d => 4}
+        end
+      end
+
+      let(:hash) { load_fixture(:clj_deep_hash1) }
+
+      it "creates a Clojure hash with given block" do
+        Zweikopf::Hash.create({:a => 1, :b => CustomTransformedEntry.new }) do |ret, k, v|
+          if v.is_a?(CustomTransformedEntry)
+            ret.assoc(Zweikopf::Hash.ruby_to_clj_keyword(k.to_s), Zweikopf::Hash.create(v.serializable_hash))
+          else
+            ret.assoc(Zweikopf::Hash.ruby_to_clj_keyword(k.to_s), v)
+          end
+        end.should eql hash
+      end
+
+    end
   end
 
   describe :from_clj do

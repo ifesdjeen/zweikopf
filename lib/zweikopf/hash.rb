@@ -13,9 +13,11 @@ module Zweikopf
       ret = empty.as_transient
       hash.each do |k, v|
         if v.is_a?(::Hash)
-          ret = ret.assoc(Keyword.intern(k.to_s), self.create(v))
+          ret = ret.assoc(ruby_to_clj_keyword(k.to_s), self.create(v))
+        elsif block_given?
+          ret = yield(ret, k, v)
         else
-          ret = ret.assoc(Keyword.intern(k.to_s), v)
+          ret = ret.assoc(ruby_to_clj_keyword(k.to_s), v)
         end
       end
       ret.persistent
@@ -32,6 +34,10 @@ module Zweikopf
         end
       end
     end # self.from_clj
+
+    def self.ruby_to_clj_keyword(keyword)
+      Keyword.intern(keyword.to_s)
+    end # self.ruby_to_clj_keyword(keyword)
 
     def self.clj_to_ruby_symbol(keyword)
       keyword.to_s.gsub(/:/, "").to_sym
