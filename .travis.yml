@@ -1,6 +1,5 @@
 rvm:
   - jruby
 jdk:
-  - openjdk6
   - openjdk7
 script: "rake && lein2 test"
