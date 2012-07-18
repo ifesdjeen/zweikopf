@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+java_import 'clojure.lang.Util'
 describe Zweikopf::Hash do
   describe :empty do
     let(:empty_hash) { load_fixture(:empty_hash) }
@@ -25,7 +25,7 @@ describe Zweikopf::Hash do
       #
 
       it "creates a Clojure hash" do
-        Zweikopf::Hash.create({:a => 1, :b => 2}).should eql hash
+        Zweikopf::Hash.from_ruby({:a => 1, :b => 2}).should eql hash
       end
     end
 
@@ -42,7 +42,7 @@ describe Zweikopf::Hash do
       #
 
       it "creates a Clojure hash" do
-        Zweikopf::Hash.create({:a => 1, :b => {:c => 3, :d =>4}}).should eql hash
+        Zweikopf::Hash.from_ruby({:a => 1, :b => {:c => 3, :d =>4}}).should eql hash
       end
     end
 
@@ -61,11 +61,11 @@ describe Zweikopf::Hash do
       let(:hash) { load_fixture(:clj_deep_hash1) }
 
       it "creates a Clojure hash with given block" do
-        Zweikopf::Hash.create({:a => 1, :b => CustomTransformedEntry.new }) do |ret, k, v|
+        Zweikopf::Hash.from_ruby({:a => 1, :b => CustomTransformedEntry.new }) do |v|
           if v.is_a?(CustomTransformedEntry)
-            ret.assoc(Zweikopf::Hash.ruby_to_clj_keyword(k.to_s), Zweikopf::Hash.create(v.serializable_hash))
+            v.serializable_hash
           else
-            ret.assoc(Zweikopf::Hash.ruby_to_clj_keyword(k.to_s), v)
+            v
           end
         end.should eql hash
       end
@@ -121,8 +121,10 @@ describe Zweikopf::Hash do
       #
 
       it "creates a Ruby array" do
-        #
+        Zweikopf::Array.from_ruby([:a, 1, :b, 2, :c, 3]).should eql(clj_array)
       end
     end
+
+
   end
 end
