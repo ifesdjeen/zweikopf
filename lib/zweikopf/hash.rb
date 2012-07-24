@@ -19,11 +19,12 @@ module Zweikopf
     def self.from_clj(clj_hash)
       {}.tap do |ruby_map|
         clj_hash.each do |k, v|
-          if v.is_a?(PersistentHashMap) || v.is_a?(PersistentArrayMap)
-            ruby_map[Keyword.from_clj(k)] = self.from_clj(v)
-          else
-            ruby_map[Keyword.from_clj(k)] = v
-          end
+          ruby_map[Transformer.from_clj(k)] = Transformer.from_clj(v)
+          #if v.is_a?(PersistentHashMap) || v.is_a?(PersistentArrayMap)
+          #  ruby_map[Keyword.from_clj(k)] = self.from_clj(v)
+          #else
+          #  ruby_map[Keyword.from_clj(k)] = v
+          #end
         end
       end
     end # self.from_clj

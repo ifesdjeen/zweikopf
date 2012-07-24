@@ -17,5 +17,19 @@ module Zweikopf
       end
     end # self.from_ruby
 
+    def self.from_clj(obj, &block)
+      return from_clj(yield(obj)) unless block.nil?
+      case obj
+        #TODO: primitve check
+        when Keyword
+          Keyword.from_clj(obj)
+        when PersistentArrayMap
+          Array.from_clj(obj)
+        when PersistentHashMap
+          Hash.from_clj(obj)
+        else obj
+      end
+    end
+
   end # Transformer
 end # Zweikopf
