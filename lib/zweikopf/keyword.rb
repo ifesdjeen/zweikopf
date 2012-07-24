@@ -7,9 +7,9 @@ module Zweikopf
       ::Keyword.intern(keyword.to_s)
     end # self.from_ruby
 
-    def self.to_ruby(keyword)
+    def self.from_clj(keyword)
       keyword.to_s.gsub(/:/, "").to_sym
-    end # self.to_ruby
+    end # self.from_clj
 
   end # Keyword
 end # Zweikopf

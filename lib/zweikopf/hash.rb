@@ -20,9 +20,9 @@ module Zweikopf
       {}.tap do |ruby_map|
         clj_hash.each do |k, v|
           if v.is_a?(PersistentHashMap) || v.is_a?(PersistentArrayMap)
-            ruby_map[Keyword.to_ruby(k)] = self.from_clj(v)
+            ruby_map[Keyword.from_clj(k)] = self.from_clj(v)
           else
-            ruby_map[Keyword.to_ruby(k)] = v
+            ruby_map[Keyword.from_clj(k)] = v
           end
         end
       end
