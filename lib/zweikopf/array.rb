@@ -9,5 +9,13 @@ module Zweikopf
                               end)
     end # to_persistent_vector
 
+    def self.from_clj(clj_arr)
+      [].tap do |ruby_arr|
+        clj_arr.each do |v|
+          ruby_arr<< Zweikopf::Transformer.from_clj(v);
+        end
+      end
+    end # self.from_clj
+
   end # Array
 end # Zweikopf

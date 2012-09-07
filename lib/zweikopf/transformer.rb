@@ -1,3 +1,8 @@
+java_import "clojure.lang.IPersistentMap"
+java_import "clojure.lang.IPersistentVector"
+java_import "clojure.lang.IPersistentList"
+java_import "clojure.lang.Keyword"
+
 module Zweikopf
   module Transformer
 
@@ -16,6 +21,22 @@ module Zweikopf
         obj
       end
     end # self.from_ruby
+
+    def self.from_clj(obj, &block)
+      if Primitive.is_primitive_type?(obj)
+        obj
+      elsif obj.is_a?(IPersistentMap)
+        Hash.from_clj(obj, &block)
+      elsif obj.is_a?(IPersistentVector || IPersistentList)
+        Array.from_clj(obj, &block)
+      elsif obj.is_a?(::Keyword)
+        Keyword.from_clj(obj)
+      elsif !block.nil?
+        from_clj(yield(obj))
+      else
+        obj
+      end
+    end # self.from_clj
 
   end # Transformer
 end # Zweikopf

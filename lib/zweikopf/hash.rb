@@ -16,14 +16,10 @@ module Zweikopf
       ret.persistent
     end
 
-    def self.from_clj(clj_hash)
+    def self.from_clj(clj_hash, &block)
       {}.tap do |ruby_map|
         clj_hash.each do |k, v|
-          if v.is_a?(PersistentHashMap) || v.is_a?(PersistentArrayMap)
-            ruby_map[Keyword.from_clj(k)] = self.from_clj(v)
-          else
-            ruby_map[Keyword.from_clj(k)] = v
-          end
+          ruby_map[Keyword.from_clj(k)] = Zweikopf::Transformer.from_clj(v, &block);
         end
       end
     end # self.from_clj
