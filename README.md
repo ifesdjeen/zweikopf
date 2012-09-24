@@ -76,10 +76,6 @@ Zweikopf::Transformer.from_ruby({:a => 1, :b => CustomTransformedEntry.new }) do
 
 Most of time 52% according to the rough estimate is spent while converting from ruby Symbol to clojure Keyword.
 
-## Usage
-
-TODO: Write usage instructions here
-
 ## Contributing
 
 1. Fork it
