@@ -1,4 +1,4 @@
-# Zweihopf, a two-headed JVM friend of yours.
+# Zweikopf, a two-headed JVM friend of yours.
 [![Continuous Integration status](https://secure.travis-ci.org/ifesdjeen/zweikopf.png)](http://travis-ci.org/ifesdjeen/zweikopf)
 
 Zweikopf helps you to interoperate between Clojure and JRuby on JVM.
