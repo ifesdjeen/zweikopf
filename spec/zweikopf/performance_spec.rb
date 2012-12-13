@@ -14,8 +14,9 @@ describe :performance do
 
   it "this spec simply shows performance, very roughly, please do your testing depending on your needs" do
     time_before = Time.now.to_f
+    ruby_obj = {:a => 1, :b => 2}
     100000.times do |i|
-      Zweikopf::Transformer.from_ruby({:a => i, :b => i})
+      Zweikopf::Transformer.from_ruby(ruby_obj)
     end
     puts "Ruby to Clojure, time elapsed: #{Time.now.to_f - time_before} seconds"
 

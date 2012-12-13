@@ -8,7 +8,11 @@ module Zweikopf
 
     def self.from_ruby(obj, &block)
       if Primitive.is_primitive_type?(obj)
-        obj
+        if obj.respond_to?(:to_java)
+          obj.to_java
+        else
+          obj
+        end
       elsif obj.is_a?(::Hash)
         Hash.from_ruby(obj, &block)
       elsif obj.is_a?(::Array)
