@@ -17,6 +17,11 @@ Or install it yourself as:
 
     $ gem install zweikopf
 
+For Clojure-driven projects, add this line to your `project.clj`:
+
+```clojure
+[zweikopf "0.1.0"]
+```
 ## Usage
 
 ### From Ruby code: Clojure->Ruby transformations
