@@ -79,7 +79,24 @@
                  (persistent! acc))))
 
   RubyString
-  (clojurize [this] (JavaUtil/convertRubyToJava this))
+  (clojurize [this]
+    (.decodeString this))
+
+  org.jruby.RubyNil
+  (clojurize  [_]
+    nil)
+
+  org.jruby.RubyFixnum
+  (clojurize  [this]
+    (.getLongValue this))
+
+  org.jruby.RubyFloat
+  (clojurize  [this]
+    (.getDoubleValue this))
+
+  org.jruby.RubyBoolean
+  (clojurize  [this]
+    (.isTrue this))
 
   org.jruby.RubyTime
   (clojurize [this]
@@ -89,8 +106,7 @@
   (clojurize [this]
     (condp #(call-ruby %2 respond_to? %1) this
       "to_hash" (clojurize (call-ruby this to_hash))
-      "to_time" (clojurize (call-ruby this to_time))
-      (JavaUtil/convertRubyToJava this)))
+      "to_time" (clojurize (call-ruby this to_time))))
 
   java.lang.Object
   (clojurize [this] this))
