@@ -106,7 +106,11 @@
   (clojurize [this]
     (condp #(call-ruby %2 respond_to? %1) this
       "to_hash" (clojurize (call-ruby this to_hash))
-      "to_time" (clojurize (call-ruby this to_time))))
+      "strftime" (-> this
+                     (call-ruby strftime "%s")
+                     (call-ruby to_i)
+                     (* 1000)
+                     java.util.Date.)))
 
   java.lang.Object
   (clojurize [this] this))
