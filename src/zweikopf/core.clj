@@ -1,25 +1,22 @@
 (ns zweikopf.core
-  (:require [clojure.reflect :as r])
+  (:require [zweikopf.multi :as multi])
   (:import [org.jruby.embed ScriptingContainer LocalContextScope]
-           [org.jruby RubyObject RubyHash RubyBasicObject
-            RubySymbol RubyHash$RubyHashEntry RubyArray RubyString]
-           [org.jruby.javasupport JavaUtil])
-  (:import [org.jruby Ruby RubyObject RubyHash RubyBasicObject
-            RubySymbol RubyHash$RubyHashEntry RubyArray]
-           [org.jruby.javasupport JavaUtil]))
+           [org.jruby Ruby]))
 
-(declare ruby)
-(declare ruby-runtime)
+(declare ^ScriptingContainer ruby)
+(declare ^Ruby ruby-runtime)
 
-(defprotocol Clojurize
-  (clojurize [this]))
+(defn clojurize
+  [this]
+  (multi/clojurize this ruby))
 
-(defprotocol Rubyize
-  (rubyize [this]))
+(defn rubyize
+  [this]
+  (multi/rubyize this ruby))
 
 (defn ruby-eval
   [script]
-  (.evalScriptlet ruby-runtime script))
+  (multi/ruby-eval ruby script))
 
 (defn ruby-require
   [lib]
@@ -29,16 +26,9 @@
   [lib]
   (ruby-eval (format "load '%s'" lib)))
 
-(defmacro call-ruby
-  [klass method & args-list]
-  `(let [args# ~(vec args-list)
-         method-name# ~(name method)
-         klass# (if (string? ~klass)
-                  (ruby-eval (clojure.string/replace ~klass "/" "::"))
-                  ~klass)]
-     (if ~(empty? args-list)
-       (.callMethod ^org.jruby.embed.ScriptingContainer ruby klass# method-name# Object)
-       (.callMethod ^org.jruby.embed.ScriptingContainer ruby klass# method-name# (object-array args#) Object))))
+(defn call-ruby
+  [& args]
+  (apply multi/call-ruby ruby args))
 
 (defn set-gem-path
   "Sets GEM_PATH Environment variable"
@@ -53,104 +43,3 @@
   []
   (defonce ruby (ScriptingContainer. LocalContextScope/SINGLETON))
   (defonce ruby-runtime (.getRuntime (.getProvider ruby))))
-
-(extend-protocol Clojurize
-  nil
-  (clojurize [this] nil)
-
-  RubySymbol
-  (clojurize [^RubySymbol this]
-             (clojure.lang.Keyword/intern (.toString this)))
-  RubyHash
-  (clojurize [^RubyHash this]
-             (loop [[^RubyHash$RubyHashEntry entry & entries] (seq (.directEntrySet this))
-                    acc (transient {})]
-               (if entry
-                 (recur entries
-                        (assoc! acc (clojurize (.getKey entry))
-                                (clojurize (.getValue entry))))
-                 (persistent! acc))))
-  RubyArray
-  (clojurize [^RubyArray this]
-             (loop [[entry & entries] (seq this)
-                    acc (transient [])]
-               (if entry
-                 (recur entries (conj! acc (clojurize entry)))
-                 (persistent! acc))))
-
-  RubyString
-  (clojurize [this]
-    (.decodeString this))
-
-  org.jruby.RubyNil
-  (clojurize  [_]
-    nil)
-
-  org.jruby.RubyFixnum
-  (clojurize  [this]
-    (.getLongValue this))
-
-  org.jruby.RubyFloat
-  (clojurize  [this]
-    (.getDoubleValue this))
-
-  org.jruby.RubyBoolean
-  (clojurize  [this]
-    (.isTrue this))
-
-  org.jruby.RubyTime
-  (clojurize [this]
-    (.toJava this java.util.Date))
-
-  org.jruby.RubyObject
-  (clojurize [this]
-    (condp #(call-ruby %2 respond_to? %1) this
-      "to_hash" (clojurize (call-ruby this to_hash))
-      "strftime" (-> this
-                     (call-ruby strftime "%s")
-                     (call-ruby to_i)
-                     (* 1000)
-                     java.util.Date.)))
-
-  java.lang.Object
-  (clojurize [this] this))
-
-(defn apply-to-keys-and-values
-  ([m f]
-     (apply-to-keys-and-values m f f))
-  ([m key-f value-f]
-     "Applies function f to all values in map m"
-     (into {} (for [[k v] m]
-                [(key-f k) (value-f v)]))))
-
-(extend-protocol Rubyize
-  clojure.lang.IPersistentMap
-  (rubyize [this]
-    (doto (RubyHash. ruby-runtime)
-      (.putAll (apply-to-keys-and-values this rubyize))))
-
-  clojure.lang.PersistentArrayMap
-  (rubyize [this]
-    (doto (RubyHash. ruby-runtime)
-      (.putAll (apply-to-keys-and-values this rubyize))))
-
-  clojure.lang.IPersistentVector
-  (rubyize [this]
-    (doto (RubyArray/newArray ruby-runtime)
-      (.addAll (for [item this] (rubyize item)))))
-
-  clojure.lang.IPersistentList
-  (rubyize [this]
-    (doto (RubyArray/newArray ruby-runtime)
-      (.addAll (for [item this] (rubyize item)))))
-
-  clojure.lang.Keyword
-  (rubyize [this]
-    (.fastNewSymbol ruby-runtime (name this)))
-
-  java.lang.Object
-  (rubyize [this]
-    this)
-
-  nil
-  (rubyize [this] nil))
