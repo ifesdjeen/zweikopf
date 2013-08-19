@@ -20,7 +20,7 @@ Or install it yourself as:
 For Clojure-driven projects, add this line to your `project.clj`:
 
 ```clojure
-[zweikopf "0.2.0"]
+[zweikopf "0.3.0"]
 ```
 ## Usage
 
