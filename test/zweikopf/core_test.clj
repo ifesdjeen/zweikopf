@@ -48,6 +48,9 @@
   (testing "Non-empty array"
     (is (= (ruby-eval "[1, :a, 'b']") (rubyize [1 :a "b"])) ))
 
+  (testing "Lazy seq"
+    (is (= (ruby-eval "[:a, :b, :c]") (rubyize (lazy-seq [:a :b :c])))))
+
   (testing "Deep array"
     (is (= (ruby-eval "[:a, [:c, :d], :e, :f]") (rubyize [:a [:c :d] :e :f])) ))
 

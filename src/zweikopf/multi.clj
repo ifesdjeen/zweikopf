@@ -122,17 +122,7 @@
     (doto (RubyHash. (runtime ruby))
       (.putAll (apply-to-keys-and-values this #(rubyize % ruby)))))
 
-  clojure.lang.PersistentArrayMap
-  (rubyize [this ruby]
-    (doto (RubyHash. (runtime ruby))
-      (.putAll (apply-to-keys-and-values this #(rubyize % ruby)))))
-
-  clojure.lang.IPersistentVector
-  (rubyize [this ruby]
-    (doto (RubyArray/newArray (runtime ruby))
-      (.addAll (for [item this] (rubyize item ruby)))))
-
-  clojure.lang.IPersistentList
+  clojure.lang.Seqable
   (rubyize [this ruby]
     (doto (RubyArray/newArray (runtime ruby))
       (.addAll (for [item this] (rubyize item ruby)))))
