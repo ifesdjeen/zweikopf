@@ -163,6 +163,6 @@ Most of time 52% according to the rough estimate is spent while converting from 
 
 # Copyright
 
-Copyright (C) 2011-2012 Alex Petrov, Maximilian Karasz, Daniel Steiner, Roman Flammer.
+Copyright (C) 2012-2013 Alex Petrov and [contributors](https://github.com/ifesdjeen/zweikopf/graphs/contributors).
 
 Distributed under the Eclipse Public License, the same as Clojure.
