@@ -60,11 +60,7 @@
 
   RubyArray
   (clojurize [this ruby]
-    (persistent!
-      (reduce (fn [acc entry]
-                (conj! acc (clojurize entry ruby)))
-              (transient [])
-              this)))
+    (mapv #(clojurize % ruby) this))
 
   RubyString
   (clojurize [this _]
@@ -103,14 +99,9 @@
   (clojurize [this _]
     this))
 
-(defn- apply-to-keys-and-values
-  ([m f]
-   (apply-to-keys-and-values m f f))
-  ([m key-f value-f]
-   "Applies function f to all values in map m"
-   (into {} (for [[k v] m]
-              [(key-f k) (value-f v)]))))
-
+(defn- apply-to-keys-and-values [m f]
+  (into {} (for [[k v] m]
+             [(f k) (f v)])))
 
 (defn- ^Ruby runtime
   [^ScriptingContainer container]
