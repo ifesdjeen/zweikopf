@@ -99,13 +99,9 @@
   (clojurize [this _]
     this))
 
-(defn- apply-to-keys-and-values
-  ([m f]
-   (apply-to-keys-and-values m f f))
-  ([m key-f value-f]
-   (into {} (for [[k v] m]
-              [(key-f k) (value-f v)]))))
-
+(defn- apply-to-keys-and-values [m f]
+  (into {} (for [[k v] m]
+             [(f k) (f v)])))
 
 (defn- ^Ruby runtime
   [^ScriptingContainer container]
