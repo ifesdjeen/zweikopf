@@ -108,7 +108,7 @@ With Clojure version everything is extremely simple:
 
 ;; Call a method on a Ruby object:
 ;; This will call `#to_hash` method on `ruby-obj`
-(call-ruby ruby-obj to_hash)
+(call-ruby ruby-obj :to_hash)
 
 ;; To set gem-path:
 (set-gem-path "my-gem-path")
