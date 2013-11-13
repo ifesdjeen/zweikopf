@@ -60,11 +60,7 @@
 
   RubyArray
   (clojurize [this ruby]
-    (persistent!
-      (reduce (fn [acc entry]
-                (conj! acc (clojurize entry ruby)))
-              (transient [])
-              this)))
+    (mapv #(clojurize % ruby) this))
 
   RubyString
   (clojurize [this _]
