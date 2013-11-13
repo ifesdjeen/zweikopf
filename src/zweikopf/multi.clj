@@ -107,7 +107,6 @@
   ([m f]
    (apply-to-keys-and-values m f f))
   ([m key-f value-f]
-   "Applies function f to all values in map m"
    (into {} (for [[k v] m]
               [(key-f k) (value-f v)]))))
 
