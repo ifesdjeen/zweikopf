@@ -166,3 +166,7 @@ Most of time 52% according to the rough estimate is spent while converting from 
 Copyright (C) 2012-2013 Alex Petrov and [contributors](https://github.com/ifesdjeen/zweikopf/graphs/contributors).
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ifesdjeen/zweikopf/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
