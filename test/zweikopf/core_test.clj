@@ -10,13 +10,21 @@
 
 (deftest clojurize-test
   (ruby-eval "require 'date'")
+  (testing "Numbers"
+    (testing "Integer"
+      (is (= 123 (clojurize (ruby-eval "123")))))
+    (testing "Floating point"
+      (is (= 123.45 (clojurize (ruby-eval "123.45")))))
+    (testing "Rational"
+      (is (= 1/3 (clojurize (ruby-eval "Rational(1,3)")))))
+    (testing "Big Decimals"
+      (is (= 12.34M (clojurize (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)"))))))
   (testing "Empty hash"
     (is (= {} (clojurize (ruby-eval "{}")))))
   (testing "Non-empty hash"
     (is (= {:a 1 :b 2} (clojurize (ruby-eval "{:a => 1, :b =>2 }")))))
   (testing "Deep hash"
     (is (= {:a 1 :b {:c 3 :d 4}} (clojurize (ruby-eval "{:a => 1, :b => {:c => 3, :d =>4}}")))))
-
   (testing "Empty array"
     (is (= [] (clojurize (ruby-eval "[]")))))
   (testing "Non-empty array"
@@ -32,6 +40,19 @@
         (is (= #inst "2013-02-19T12:34:56" date))))))
 
 (deftest rubyize-test
+  (testing "Numbers"
+    (testing "Integer"
+      (is (= (ruby-eval "123")
+             (rubyize 123))))
+    (testing "Floating point"
+      (is (= (ruby-eval "123.45")
+             (rubyize 123.45))))
+    (testing "Rational"
+      (is (= (ruby-eval "Rational(1,3)")
+             (rubyize 1/3))))
+    (testing "Big Decimals"
+      (is (= (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)")
+             (rubyize 12.34M)))))
   (testing "Emtpy hash"
     (is (.equals (ruby-eval "{}") (rubyize {}))))
   (testing "Non-emtpy hash"

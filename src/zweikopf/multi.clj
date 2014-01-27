@@ -8,6 +8,7 @@
                       RubyHash
                       RubyHash$RubyHashEntry
                       RubyObject
+                      RubyRational
                       RubyString
                       RubySymbol)))
 
@@ -16,6 +17,10 @@
 
 (defprotocol Rubyize
   (rubyize [this ^ScriptingContainer ruby]))
+
+(defn- ^Ruby runtime
+  [^ScriptingContainer container]
+  (-> container .getProvider .getRuntime))
 
 (defn ruby-eval
   [^ScriptingContainer ruby script]
@@ -70,6 +75,13 @@
   (clojurize  [_ _]
     nil)
 
+  org.jruby.RubyRational
+  (clojurize [this ruby]
+    (let [context (.getCurrentContext (runtime ruby))
+          numerator (clojurize (.numerator this context) ruby)
+          denominator (clojurize (.denominator this context) ruby)]
+      (/ numerator denominator)))
+
   org.jruby.RubyFixnum
   (clojurize  [this _]
     (.getLongValue this))
@@ -103,15 +115,17 @@
   (into {} (for [[k v] m]
              [(f k) (f v)])))
 
-(defn- ^Ruby runtime
-  [^ScriptingContainer container]
-  (-> container .getProvider .getRuntime))
-
 (extend-protocol Rubyize
   clojure.lang.IPersistentMap
   (rubyize [this ruby]
     (doto (RubyHash. (runtime ruby))
       (.putAll (apply-to-keys-and-values this #(rubyize % ruby)))))
+
+  clojure.lang.Ratio
+  (rubyize [this ruby]
+    (RubyRational/newRational (runtime ruby)
+                              (.numerator this)
+                              (.denominator this)))
 
   clojure.lang.Seqable
   (rubyize [this ruby]
