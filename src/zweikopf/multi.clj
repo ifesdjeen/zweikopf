@@ -113,6 +113,10 @@
     (doto (RubyHash. (runtime ruby))
       (.putAll (apply-to-keys-and-values this #(rubyize % ruby)))))
 
+  clojure.lang.Ratio
+  (rubyize [this ruby]
+    (.doubleValue this))
+
   clojure.lang.Seqable
   (rubyize [this ruby]
     (doto (RubyArray/newArray (runtime ruby))

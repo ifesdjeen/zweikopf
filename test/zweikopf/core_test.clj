@@ -45,6 +45,9 @@
     (testing "Floating point"
       (is (= (ruby-eval "123.45")
              (rubyize 123.45))))
+    (testing "Rational"
+      (is (= (ruby-eval "0.25")
+             (rubyize 1/4))))
     (testing "Big Decimals"
       (is (= (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)")
              (rubyize 12.34M)))))
