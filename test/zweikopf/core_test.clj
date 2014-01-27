@@ -15,6 +15,8 @@
       (is (= 123 (clojurize (ruby-eval "123")))))
     (testing "Floating point"
       (is (= 123.45 (clojurize (ruby-eval "123.45")))))
+    (testing "Rational"
+      (is (= 1/3 (clojurize (ruby-eval "Rational(1,3)")))))
     (testing "Big Decimals"
       (is (= 12.34M (clojurize (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)"))))))
   (testing "Empty hash"
@@ -46,8 +48,8 @@
       (is (= (ruby-eval "123.45")
              (rubyize 123.45))))
     (testing "Rational"
-      (is (= (ruby-eval "0.25")
-             (rubyize 1/4))))
+      (is (= (ruby-eval "Rational(1,3)")
+             (rubyize 1/3))))
     (testing "Big Decimals"
       (is (= (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)")
              (rubyize 12.34M)))))
