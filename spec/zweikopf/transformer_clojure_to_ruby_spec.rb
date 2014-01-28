@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'bigdecimal'
 java_import 'clojure.lang.Util'
 
 describe Zweikopf do
@@ -17,6 +18,12 @@ describe Zweikopf do
     it "creates a Clojure hash" do
       Zweikopf::Transformer.from_clj(hash).should eql({:a => 1, :b => 2})
     end
+  end
+
+  context "given a java.math.BigDecimal" do
+    it "creates a ruby BigDecimal" do
+      Zweikopf::Transformer.from_clj(java.math.BigDecimal.new("12.34")).should eql(BigDecimal.new("12.34", 4))
+     end
   end
 
   context "when given a recursive hash structure" do

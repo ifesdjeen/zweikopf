@@ -35,6 +35,8 @@ module Zweikopf
         Array.from_clj(obj, &block)
       elsif obj.is_a?(::Keyword)
         Keyword.from_clj(obj)
+      elsif obj.is_a?(Java::java.math.BigDecimal)
+        BigDecimal.new(obj.to_s, obj.precision)
       elsif !block.nil?
         from_clj(yield(obj))
       else
