@@ -2,6 +2,7 @@ java_import "clojure.lang.IPersistentMap"
 java_import "clojure.lang.IPersistentVector"
 java_import "clojure.lang.IPersistentList"
 java_import "clojure.lang.Keyword"
+java_import "clojure.lang.Ratio"
 
 module Zweikopf
   module Transformer
@@ -21,6 +22,8 @@ module Zweikopf
         Keyword.from_ruby(obj)
       elsif obj.is_a?(BigDecimal)
         java.math.BigDecimal.new(obj.to_s)
+      elsif obj.is_a?(Rational)
+        Ratio.new(obj.numerator, obj.denominator)
       elsif !block.nil?
         from_ruby(yield(obj))
       else
