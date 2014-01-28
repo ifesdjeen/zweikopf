@@ -10,6 +10,18 @@ describe Zweikopf do
     end
   end
 
+  context "when given a ruby BigDecimal" do
+    it "creates a java.math.Bigdecimal" do
+      Zweikopf::Transformer.from_ruby(BigDecimal.new('12.34', 4)).should eql java.math.BigDecimal.new('12.34')
+    end
+  end
+
+  context "when given a ruby Rational" do
+    it "creates a clojure.lang.Ratio" do
+      Zweikopf::Transformer.from_ruby(Rational(1,3)).should eql Java::clojure.lang.Ratio.new(1,3)
+    end
+  end
+
   context "when given a non-recursive hash structure" do
 
     #
