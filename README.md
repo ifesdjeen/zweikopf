@@ -20,8 +20,15 @@ Or install it yourself as:
 For Clojure-driven projects, add this line to your `project.clj`:
 
 ```clojure
-[zweikopf "0.4.0"]
+[zweikopf "1.0.0"]
 ```
+
+For Ruby-driven ones, just add the following line to your Gemspec:
+
+```ruby
+gem "zweikopf", "~> 1.0.0"
+```
+
 ## Usage
 
 ### From Ruby code: Clojure->Ruby transformations
@@ -169,4 +176,3 @@ Distributed under the Eclipse Public License, the same as Clojure.
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ifesdjeen/zweikopf/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
