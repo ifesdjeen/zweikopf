@@ -19,6 +19,8 @@ module Zweikopf
         Array.from_ruby(obj, &block)
       elsif obj.is_a?(::Symbol)
         Keyword.from_ruby(obj)
+      elsif obj.is_a?(BigDecimal)
+        java.math.BigDecimal.new(obj.to_s)
       elsif !block.nil?
         from_ruby(yield(obj))
       else

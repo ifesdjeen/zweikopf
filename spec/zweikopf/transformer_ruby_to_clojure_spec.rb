@@ -10,6 +10,12 @@ describe Zweikopf do
     end
   end
 
+  context "when given a ruby BigDecimal" do
+    it "creates a java.math.Bigdecimal" do
+      Zweikopf::Transformer.from_ruby(BigDecimal.new('12.34', 4)).should eql java.math.BigDecimal.new('12.34')
+    end
+  end
+
   context "when given a non-recursive hash structure" do
 
     #
