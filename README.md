@@ -1,7 +1,7 @@
 # Zweikopf, a two-headed JVM friend of yours.
 [![Continuous Integration status](https://secure.travis-ci.org/ifesdjeen/zweikopf.png)](http://travis-ci.org/ifesdjeen/zweikopf)
 
-Zweikopf helps you to interoperate between Clojure and JRuby on JVM.
+Zweikopf ([pronunciation](http://translate.google.de/translate_tts?ie=UTF-8&q=zweikopf&tl=de&total=1&idx=0&textlen=8&prev=input)) helps you to interoperate between Clojure and JRuby on JVM.
 
 ## Installation
 
