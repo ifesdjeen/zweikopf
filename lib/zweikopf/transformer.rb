@@ -42,6 +42,8 @@ module Zweikopf
         Keyword.from_clj(obj)
       elsif obj.is_a?(Java::java.math.BigDecimal)
         BigDecimal.new(obj.to_s, obj.precision)
+      elsif obj.is_a?(Ratio)
+        Rational(obj.numerator, obj.denominator)
       elsif !block.nil?
         from_clj(yield(obj))
       else

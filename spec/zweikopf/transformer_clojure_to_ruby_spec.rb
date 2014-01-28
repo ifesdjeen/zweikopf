@@ -22,8 +22,14 @@ describe Zweikopf do
 
   context "given a java.math.BigDecimal" do
     it "creates a ruby BigDecimal" do
-      Zweikopf::Transformer.from_clj(java.math.BigDecimal.new("12.34")).should eql(BigDecimal.new("12.34", 4))
+      Zweikopf::Transformer.from_clj(java.math.BigDecimal.new("12.34")).should eql BigDecimal.new("12.34", 4)
      end
+  end
+
+  context "given a clojure.lang.Ratio" do
+    it "creates a ruby Rational" do
+      Zweikopf::Transformer.from_clj(Java::clojure.lang.Ratio.new(1,3)).should eql Rational(1,3)
+    end
   end
 
   context "when given a recursive hash structure" do
