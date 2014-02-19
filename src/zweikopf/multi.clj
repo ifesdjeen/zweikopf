@@ -56,13 +56,15 @@
 
   RubyStruct
   (clojurize [this ruby]
-    (persistent!
-      (reduce (fn [acc key]
-                (assoc! acc
-                        (keyword (clojurize key ruby))
-                        (clojurize (call-ruby ruby this "[]" key) ruby)))
-              (transient {})
-              (.members this))))
+    (let [context (.getCurrentContext (runtime ruby))
+          null-block org.jruby.runtime.Block/NULL_BLOCK]
+      (persistent!
+        (reduce (fn [acc [key val]]
+                  (assoc! acc
+                          (keyword (clojurize key ruby))
+                          (clojurize val ruby)))
+                (transient {})
+                (call-ruby ruby (.each_pair this context null-block) :to_a)))))
 
   RubyHash
   (clojurize [this ruby]
