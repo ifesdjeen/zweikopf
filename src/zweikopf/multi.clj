@@ -10,6 +10,7 @@
                       RubyObject
                       RubyRational
                       RubyString
+                      RubyStruct
                       RubySymbol)))
 
 (defprotocol Clojurize
@@ -52,6 +53,18 @@
   RubySymbol
   (clojurize [this _]
     (clojure.lang.Keyword/intern (.toString this)))
+
+  RubyStruct
+  (clojurize [this ruby]
+    (let [context (.getCurrentContext (runtime ruby))
+          null-block org.jruby.runtime.Block/NULL_BLOCK]
+      (persistent!
+        (reduce (fn [acc [key val]]
+                  (assoc! acc
+                          (keyword (clojurize key ruby))
+                          (clojurize val ruby)))
+                (transient {})
+                (call-ruby ruby (.each_pair this context null-block) :to_a)))))
 
   RubyHash
   (clojurize [this ruby]

@@ -19,6 +19,8 @@
       (is (= 1/3 (clojurize (ruby-eval "Rational(1,3)")))))
     (testing "Big Decimals"
       (is (= 12.34M (clojurize (ruby-eval "require 'bigdecimal'; BigDecimal.new(12.34,4)"))))))
+  (testing "Struct"
+    (is (= {:a 1 :b 2} (clojurize (ruby-eval "Struct.new(:a, :b).new(1, 2)")))))
   (testing "Empty hash"
     (is (= {} (clojurize (ruby-eval "{}")))))
   (testing "Non-empty hash"
