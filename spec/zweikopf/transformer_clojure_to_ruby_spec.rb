@@ -66,6 +66,23 @@ describe Zweikopf do
     end
   end
 
+  context "when given a clojure lazy seq" do
+
+    #
+    # Environment
+    #
+
+    let(:clj_lazy_seq) { load_fixture(:clj_lazy_seq1) }
+
+    #
+    # Examples
+    #
+
+    it "creates a Ruby array" do
+      Zweikopf::Transformer.from_clj(clj_lazy_seq).should eql([:a, 1, :b, 2, :c, 3])
+    end
+  end
+
 
   context "when given a hash that contains array that has a hash as an item" do
 
