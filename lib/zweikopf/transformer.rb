@@ -1,6 +1,5 @@
 java_import "clojure.lang.IPersistentMap"
-java_import "clojure.lang.IPersistentVector"
-java_import "clojure.lang.IPersistentList"
+java_import "clojure.lang.Seqable"
 java_import "clojure.lang.Keyword"
 java_import "clojure.lang.Ratio"
 
@@ -36,7 +35,7 @@ module Zweikopf
         obj
       elsif obj.is_a?(IPersistentMap)
         Hash.from_clj(obj, &block)
-      elsif obj.is_a?(IPersistentVector || IPersistentList)
+      elsif obj.is_a?(Seqable)
         Array.from_clj(obj, &block)
       elsif obj.is_a?(::Keyword)
         Keyword.from_clj(obj)
