@@ -8,7 +8,7 @@ task :default => 'spec:all'
 namespace :spec do
   desc "Run all specs"
   RSpec::Core::RakeTask.new('all') do |t|
-    t.expect_with(:rspec) { |c| c.syntax = :should }
+    # t.expect_with(:rspec) { |c| c.syntax = :should }
     t.pattern = 'spec/{**/*_spec.rb}'
   end
 end
