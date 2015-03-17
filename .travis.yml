@@ -2,4 +2,4 @@ rvm:
   - jruby
 jdk:
   - openjdk7
-script: "rake && lein2 test"
+script: "rake && lein test"
