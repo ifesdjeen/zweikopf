@@ -2,4 +2,4 @@ rvm:
   - jruby
 jdk:
   - openjdk7
-script: "rake && lein test"
+script: "wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod +x lein && rake && ./lein test"
