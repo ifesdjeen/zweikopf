@@ -147,7 +147,7 @@
 
   clojure.lang.Keyword
   (rubyize [this ruby]
-    (.fastNewSymbol (runtime ruby) (name this)))
+    (.newSymbol (runtime ruby) (name this)))
 
   java.lang.Object
   (rubyize [this _]
