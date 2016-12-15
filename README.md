@@ -20,13 +20,13 @@ Or install it yourself as:
 For Clojure-driven projects, add this line to your `project.clj`:
 
 ```clojure
-[zweikopf "1.0.1"]
+[zweikopf "1.0.2"]
 ```
 
 For Ruby-driven ones, just add the following line to your Gemspec:
 
 ```ruby
-gem "zweikopf", "~> 1.0.1"
+gem "zweikopf", "~> 1.0.2"
 ```
 
 ## Usage
